@@ -293,11 +293,11 @@ elif selected_option == '🎯 Prediction':
             file_name='house_price_prediction.csv',
             mime='text/csv'
         )
-# Social links
-linkedin_icon = "https://cdn-icons-png.flaticon.com/512/174/174857.png"
-github_icon = "https://cdn-icons-png.flaticon.com/512/25/25231.png"
+        # Social links
+        linkedin_icon = "https://cdn-icons-png.flaticon.com/512/174/174857.png"
+        github_icon = "https://cdn-icons-png.flaticon.com/512/25/25231.png"
 
-st.markdown(
+        st.markdown(
         f"""
         <div style="text-align: center; font-family: Arial, sans-serif;">
             <h2 style="color: #4CAF50;">Crafted with passion by Manikandan M</h2>
@@ -317,4 +317,4 @@ st.markdown(
         </div>
         """,
         unsafe_allow_html=True
-    )
+        )
