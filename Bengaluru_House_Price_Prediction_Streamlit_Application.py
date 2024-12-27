@@ -139,7 +139,7 @@ elif selected_option == '🧩 Visualization':
         lambda x: np.mean([float(i) for i in str(x).split('-')]) if '-' in str(x) 
         else float(re.findall(r'[0-9.]+', str(x))[0]) if re.findall(r'[0-9.]+', str(x)) else np.nan
     )
-    House_data.dropna(subset=['total_sqft'], inplace=True)
+    House_data.dropna(subset=['total_sqft'],inplace=True)
     House_data['Price_per_Sqft'] = House_data['price'] * 100000 / House_data['total_sqft']
 
     st.write('**Scatter plot for Square Feet Vs Price**')
