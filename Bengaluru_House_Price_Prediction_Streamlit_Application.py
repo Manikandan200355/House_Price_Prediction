@@ -294,8 +294,8 @@ elif selected_option == '🎯 Prediction':
     input_features_df['balcony'] = balcony
 
     if location in dummies.columns:
-        loc_index = np.where(dummies.columns == location)[0][0]
-        input_features_df.iloc[0, X.columns.get_loc(location)] = 1
+            loc_index = np.where(dummies.columns == location)[0][0]
+            input_features_df.iloc[0, X.columns.get_loc(location)] = 1
 
     # When button is clicked, make prediction
     if st.button('Predict'):
