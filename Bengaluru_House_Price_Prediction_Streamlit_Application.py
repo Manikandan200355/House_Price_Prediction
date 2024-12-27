@@ -129,6 +129,147 @@ elif selected_option == '📥🗂️ Loading and Import':
     unsafe_allow_html=True
     )
 
+elif selected_option == '🧩 Visualization':
+    
+    st.title('🧩 **Visualization**')
+    # Dropping the Unwanted Columns
+    # House_data.drop(columns=['availability','society'],inplace=True)
+    
+    # Data Mapping
+    Data_Mapping=({'Super built-up  Area' : '1','Built-up  Area' : '2','Plot  Area' : '3','Carpet  Area' : '4'})
+    House_data['area_type_Numeric'] = House_data['area_type'].map(Data_Mapping)
+    
+    # Extracting Digits from the String
+    House_data['bhk'] = House_data['size'].str.split(' ').str.get(0)
+    
+    # Dropping Duplicates
+    House_data.drop_duplicates(inplace=True)
+    
+    # Dropping null values which is very small compared to the dataset
+    House_data.dropna(subset=['location','bhk','bath'],inplace=True)
+    
+    # Datatype Conversion
+    House_data['area_type_Numeric'] =  pd.to_numeric(House_data['area_type_Numeric'],errors='coerce')
+    House_data['bhk'] = House_data['bhk'].astype('int64')
+    
+    # Filling null values with their median
+    Balcony_median = House_data['balcony'].median()
+    House_data['balcony'] = House_data['balcony'].fillna(value = Balcony_median)
+    
+    
+    # Finding mean for the range values, extracting only digits from the string values and converting into float datatype
+    import re
+
+    # Function to process total_sqft values
+    def process_total_sqft(value):
+        if isinstance(value, str):
+            if '-' in value:
+            # Handle range values (e.g., '2100 - 2850')
+                values = list(map(float, value.split('-')))
+                return sum(values) / len(values)
+            elif re.search(r'\d+', value):
+            # Extract digits from strings (e.g., '34.56sq.meter')
+                return float(re.search(r'\d+', value).group().replace('.', ''))
+        try:
+        # Return the value if it's already a valid float
+                return float(value)
+        except ValueError:
+        # Return None for any values that can't be processed
+                return None
+
+    # Apply the function to the total_sqft column
+    House_data['total_sqft'] = House_data['total_sqft'].apply(process_total_sqft)
+    
+    # Feature Extraction and Dimensionality Reduction
+    
+    #Creating a copy of the House_data dataframe
+    df = House_data.copy()
+
+    # In Real-Estate Price Per Square Feet is important
+    # Since price attribute is in lakh rupees (i.e) 39.07 = 39 lakhs and 7 thousand ,so multiplied with 1 lakh
+    df['Price_per_Sqft'] = df['price'] * 100000 / df['total_sqft']
+    
+    #Now we need to  handle the 'location' attribute
+
+    # To identify unique locations
+    location_unique = df.location.value_counts()
+    
+    # Gather location_count <= 10 (i.e) unique_location and storing it in 'location_unique_less_than_10'
+    location_unique_less_than_10 = location_unique[location_unique <= 10]
+    
+    # Applying the define function
+    df['location'] = df['location'].apply(lambda x : 'other' if x in location_unique_less_than_10 else x)
+    
+    # Scatter plot for Square_Feet vs Price
+    st.write('**Scatter plot for Square_Feet Vs Price**')
+    plt.figure(figsize = (10,6))
+    plt.scatter(x = df['total_sqft'], y = df['price'])
+    plt.title('Price based on Sqft')
+    plt.xlabel('Square Feet')
+    plt.ylabel('Price')
+    plt.grid(True)
+    st.pyplot(plt.gcf())
+    
+    # Calculating the average Price_per_Sqft for each location
+    
+    st.write('**Bar plot for Calculating the average Price_per_Sqft for each location**')
+    location_avg_price = df.groupby('location')['Price_per_Sqft'].mean().reset_index()
+    plt.figure(figsize=(10,6))
+    plt.bar(location_avg_price['location'], location_avg_price['Price_per_Sqft'])
+    plt.title('Location vs Average Price per Sqft')
+    plt.xlabel('Location')
+    plt.ylabel('Average Price per Sqft')
+    st.pyplot(plt.gcf())
+    
+    # Distribution of Price_per_Sqft for each location 
+    
+    st.write('**Box plot for Distribution of Price_per_Sqft for each location**')
+    plt.figure(figsize=(25, 6))
+    sns.boxplot(x = df['location'], y = df['price'])
+    plt.title('Location vs Price per Sqft')
+    plt.xlabel('Location')
+    plt.ylabel('Price per Sqft')
+    st.pyplot(plt.gcf())
+    
+    # Heat Map
+    st.write('**Heat Map for Correlation Matrix**')
+    correlation_matrix = df.drop(columns = ['area_type','location','size','availability','society']).corr()
+    sns.heatmap(correlation_matrix, annot = True, cmap = 'coolwarm', vmin = -1, vmax = 1)
+    plt.title('Corelation Heatmap')
+    st.pyplot(plt.gcf())
+    
+    # Pair Plot
+    st.write('**Pair Plot**')
+    plt.figure(figsize = (10,6))
+    sns.pairplot(df, hue = 'location',diag_kind = 'kde')
+    plt.title("Pairplot")
+    st.pyplot(plt.gcf())
+    
+    linkedin_icon = "https://cdn-icons-png.flaticon.com/512/174/174857.png"
+    github_icon = "https://cdn-icons-png.flaticon.com/512/25/25231.png"
+
+    st.markdown(
+    f"""
+    <div style="text-align: center; font-family: Arial, sans-serif;">
+        <h3 style="color: #4CAF50;">Crafted with passion by Manikandan M</h3>
+        <p>Follow me on:</p>
+        <p>
+            <a href="https://www.linkedin.com/in/manikandan-m-60878729a" target="_blank">
+                <img src="{linkedin_icon}" width="30" style="vertical-align: middle; margin-right: 5px;">
+                LinkedIn
+            </a>
+        </p>
+        <p>
+            <a href="https://github.com/Manikandan200355" target="_blank">
+                <img src="{github_icon}" width="30" style="vertical-align: middle; margin-right: 5px;">
+                GitHub
+            </a>
+        </p>
+    </div>
+    """,
+    unsafe_allow_html=True
+    )
+
 elif selected_option == '🎯 Prediction':
     st.title('🎯 **Prediction**')
 
@@ -293,11 +434,11 @@ elif selected_option == '🎯 Prediction':
             file_name='house_price_prediction.csv',
             mime='text/csv'
         )
-# Social links
-linkedin_icon = "https://cdn-icons-png.flaticon.com/512/174/174857.png"
-github_icon = "https://cdn-icons-png.flaticon.com/512/25/25231.png"
+    # Social links
+    linkedin_icon = "https://cdn-icons-png.flaticon.com/512/174/174857.png"
+    github_icon = "https://cdn-icons-png.flaticon.com/512/25/25231.png"
 
-st.markdown(
+    st.markdown(
         f"""
         <div style="text-align: center; font-family: Arial, sans-serif;">
             <h2 style="color: #4CAF50;">Crafted with passion by Manikandan M</h2>
