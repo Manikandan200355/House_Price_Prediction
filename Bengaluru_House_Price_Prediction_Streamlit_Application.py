@@ -293,28 +293,28 @@ elif selected_option == '🎯 Prediction':
             file_name='house_price_prediction.csv',
             mime='text/csv'
         )
-# # Social links
-# linkedin_icon = "https://cdn-icons-png.flaticon.com/512/174/174857.png"
-# github_icon = "https://cdn-icons-png.flaticon.com/512/25/25231.png"
+     # Social links
+      linkedin_icon = "https://cdn-icons-png.flaticon.com/512/174/174857.png"
+      github_icon = "https://cdn-icons-png.flaticon.com/512/25/25231.png"
 
-# st.markdown(
-#         f"""
-#         <div style="text-align: center; font-family: Arial, sans-serif;">
-#             <h2 style="color: #4CAF50;">Crafted with passion by Manikandan M</h2>
-#             <p>Follow me on:</p>
-#             <p>
-#                 <a href="https://www.linkedin.com/in/manikandan-m-60878729a" target="_blank">
-#                     <img src="{linkedin_icon}" width="30" style="vertical-align: middle; margin-right: 5px;">
-#                     LinkedIn
-#                 </a>
-#             </p>
-#             <p>
-#                 <a href="https://github.com/Manikandan200355" target="_blank">
-#                     <img src="{github_icon}" width="30" style="vertical-align: middle; margin-right: 5px;">
-#                     GitHub
-#                 </a>
-#             </p>
-#         </div>
-#         """,
-#         unsafe_allow_html=True
-#     )
+      st.markdown(
+        f"""
+        <div style="text-align: center; font-family: Arial, sans-serif;">
+            <h2 style="color: #4CAF50;">Crafted with passion by Manikandan M</h2>
+            <p>Follow me on:</p>
+            <p>
+                <a href="https://www.linkedin.com/in/manikandan-m-60878729a" target="_blank">
+                    <img src="{linkedin_icon}" width="30" style="vertical-align: middle; margin-right: 5px;">
+                    LinkedIn
+                </a>
+            </p>
+            <p>
+                <a href="https://github.com/Manikandan200355" target="_blank">
+                    <img src="{github_icon}" width="30" style="vertical-align: middle; margin-right: 5px;">
+                    GitHub
+                </a>
+            </p>
+        </div>
+        """,
+        unsafe_allow_html=True
+         )
