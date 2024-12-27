@@ -128,6 +128,32 @@ elif selected_option == '📥🗂️ Loading and Import':
     """,
     unsafe_allow_html=True
     )
+    
+elif selected_option == '🧩 Visualization':
+    st.title('🧩 Visualization')
+    # Data preprocessing for visualization
+    House_data['bhk'] = House_data['size'].str.split(' ').str[0].astype(int)
+    House_data.drop_duplicates(inplace=True)
+    House_data.dropna(subset=['location', 'bhk', 'bath'], inplace=True)
+    House_data['total_sqft'] = House_data['total_sqft'].apply(
+        lambda x: np.mean([float(i) for i in str(x).split('-')]) if '-' in str(x) 
+        else float(re.findall(r'[0-9.]+', str(x))[0]) if re.findall(r'[0-9.]+', str(x)) else np.nan
+    )
+   House_data.dropna(subset=['total_sqft'], inplace=True)
+    House_data['Price_per_Sqft'] = House_data['price'] * 100000 / House_data['total_sqft']
+
+    st.write('**Scatter plot for Square Feet Vs Price**')
+    plt.figure(figsize=(10, 6))
+    plt.scatter(House_data['total_sqft'], House_data['price'])
+    plt.title('Price vs Total Square Feet')
+    plt.xlabel('Total Square Feet')
+    plt.ylabel('Price')
+    st.pyplot(plt.gcf())
+
+    st.write('**Heatmap of Correlation**')
+    correlation_matrix = House_data.corr()
+    sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm')
+    st.pyplot(plt.gcf())
 
 elif selected_option == '🎯 Prediction':
     st.title('🎯 **Prediction**')
