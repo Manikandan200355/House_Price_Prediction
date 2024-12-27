@@ -128,32 +128,6 @@ elif selected_option == '📥🗂️ Loading and Import':
     """,
     unsafe_allow_html=True
     )
-    
-elif selected_option == '🧩 Visualization':
-    st.title('🧩 Visualization')
-    # Data preprocessing for visualization
-    House_data['bhk'] = House_data['size'].str.split(' ').str[0].astype(int)
-    House_data.drop_duplicates(inplace=True)
-    House_data.dropna(subset=['location', 'bhk', 'bath'], inplace=True)
-    House_data['total_sqft'] = House_data['total_sqft'].apply(
-        lambda x: np.mean([float(i) for i in str(x).split('-')]) if '-' in str(x) 
-        else float(re.findall(r'[0-9.]+', str(x))[0]) if re.findall(r'[0-9.]+', str(x)) else np.nan
-    )
-    House_data.dropna(subset=['total_sqft'],inplace=True)
-    House_data['Price_per_Sqft'] = House_data['price'] * 100000 / House_data['total_sqft']
-
-    st.write('**Scatter plot for Square Feet Vs Price**')
-    plt.figure(figsize=(10, 6))
-    plt.scatter(House_data['total_sqft'], House_data['price'])
-    plt.title('Price vs Total Square Feet')
-    plt.xlabel('Total Square Feet')
-    plt.ylabel('Price')
-    st.pyplot(plt.gcf())
-
-    st.write('**Heatmap of Correlation**')
-    correlation_matrix = House_data.corr()
-    sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm')
-    st.pyplot(plt.gcf())
 
 elif selected_option == '🎯 Prediction':
     st.title('🎯 **Prediction**')
@@ -294,8 +268,8 @@ elif selected_option == '🎯 Prediction':
     input_features_df['balcony'] = balcony
 
     if location in dummies.columns:
-            loc_index = np.where(dummies.columns == location)[0][0]
-            input_features_df.iloc[0, X.columns.get_loc(location)] = 1
+        loc_index = np.where(dummies.columns == location)[0][0]
+        input_features_df.iloc[0, X.columns.get_loc(location)] = 1
 
     # When button is clicked, make prediction
     if st.button('Predict'):
@@ -319,11 +293,11 @@ elif selected_option == '🎯 Prediction':
             file_name='house_price_prediction.csv',
             mime='text/csv'
         )
-     # Social links
-      linkedin_icon = "https://cdn-icons-png.flaticon.com/512/174/174857.png"
-      github_icon = "https://cdn-icons-png.flaticon.com/512/25/25231.png"
+# Social links
+linkedin_icon = "https://cdn-icons-png.flaticon.com/512/174/174857.png"
+github_icon = "https://cdn-icons-png.flaticon.com/512/25/25231.png"
 
-      st.markdown(
+st.markdown(
         f"""
         <div style="text-align: center; font-family: Arial, sans-serif;">
             <h2 style="color: #4CAF50;">Crafted with passion by Manikandan M</h2>
@@ -343,4 +317,4 @@ elif selected_option == '🎯 Prediction':
         </div>
         """,
         unsafe_allow_html=True
-         )
+    )
