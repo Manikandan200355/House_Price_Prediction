@@ -47,7 +47,7 @@ if selected_option == '🏠🌟Home':
     st.write("- Predict House prices in Bengaluru based on various features such as Total Square Feet, Number of Bathrooms, Balconies, and Location.")
     
     st.write("### 🛠️How it works:")
-    st.write("- This application uses a Machine Learning Model (RandomForestRegressor) trained on historical House price data to make Predictions.")
+    st.write("- This application uses a Machine Learning Model (Linear Regression) trained on historical House price data to make Predictions.")
     
     st.write("### 👩🏻‍💻Technologies Used:")
     st.write("* 🐍🧩**Python**: Programming language for Data Manipulation and Model building.")
